@@ -21,6 +21,10 @@ type Config struct {
 	DB struct {
 		ConnStr Env `envconfig:"DB_CONNSTR" required:"true"`
 	}
+	JWT struct {
+		Secret      Env `envconfig:"JWT_SECRET" required:"true"`
+		HourExpired Env `envconfig:"JWT_SECRET" required:"true"`
+	}
 }
 
 // LoadDefault loads default config (default.yml) and override config with env if supplied
