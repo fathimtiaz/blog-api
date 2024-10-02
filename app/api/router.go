@@ -2,15 +2,18 @@ package api
 
 import (
 	"blog-api/api/handler"
+	"blog-api/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Router() (router *gin.Engine) {
+func Router(
+	userService *service.UserService,
+) (router *gin.Engine) {
 	router = gin.Default()
 
 	// user
-	userHandler := handler.NewUserHandler()
+	userHandler := handler.NewUserHandler(userService)
 	router.POST("/register", userHandler.Register)
 	router.POST("/login", userHandler.Login)
 

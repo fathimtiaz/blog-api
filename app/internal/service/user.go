@@ -8,32 +8,32 @@ import (
 )
 
 type UserRepo interface {
-	InsertUser(context.Context, *domain.User) error
+	SaveUser(context.Context, *domain.User) error
 	GetUser(context.Context, repository.UserQuery) (domain.User, error)
 }
 
-type userService struct {
+type UserService struct {
 	cfg      config.Config
 	userRepo UserRepo
 }
 
-func NewUserService(cfg config.Config, userRepo UserRepo) *userService {
-	return &userService{cfg, userRepo}
+func NewUserService(cfg config.Config, userRepo UserRepo) *UserService {
+	return &UserService{cfg, userRepo}
 }
 
-func (s *userService) Register(ctx context.Context, name, email, password string) (user domain.User, err error) {
+func (s *UserService) Register(ctx context.Context, name, email, password string) (user domain.User, err error) {
 	if user, err = domain.NewUser(name, email, password); err != nil {
 		return
 	}
 
-	if err = s.userRepo.InsertUser(ctx, &user); err != nil {
+	if err = s.userRepo.SaveUser(ctx, &user); err != nil {
 		return
 	}
 
 	return
 }
 
-func (s *userService) Login(ctx context.Context, email, password string) (token string, err error) {
+func (s *UserService) Login(ctx context.Context, email, password string) (token string, err error) {
 	var user domain.User
 
 	if user, err = s.userRepo.GetUser(ctx, repository.UserQuery{Email: email}); err != nil {

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS user_ (
 
 CREATE TABLE IF NOT EXISTS post_ (
     id SERIAL PRIMARY KEY,
-    author_id INT NOT NULL,
+    author_id BIGINT UNSIGNED,
     content TEXT NOT NULL,
     deleted BOOLEAN,
     created_at TIMESTAMP,
@@ -22,12 +22,11 @@ CREATE TABLE IF NOT EXISTS post_ (
 
 CREATE TABLE IF NOT EXISTS post_comment_ (
     id SERIAL PRIMARY KEY,
-    post_id INT NOT NULL,
-    author_id INT NOT NULL,
+    post_id BIGINT UNSIGNED,
+    author_name VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
 
-    FOREIGN KEY (post_id) REFERENCES post_ (id),
-    FOREIGN KEY (author_id) REFERENCES user_ (id)
+    FOREIGN KEY (post_id) REFERENCES post_ (id)
 );

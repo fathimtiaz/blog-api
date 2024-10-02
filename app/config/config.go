@@ -14,10 +14,6 @@ type Config struct {
 		Env  Env `envconfig:"APP_ENV" required:"true"`
 		Port Env `envconfig:"APP_PORT" required:"true"`
 	}
-	RateLimit struct {
-		IP      Env `envconfig:"RATELIMIT_IP" required:"true"`
-		IPRoute Env `envconfig:"RATELIMIT_IPROUTE" required:"true"`
-	}
 	DB struct {
 		ConnStr Env `envconfig:"DB_CONNSTR" required:"true"`
 	}
@@ -28,12 +24,12 @@ type Config struct {
 }
 
 // LoadDefault loads default config (default.yml) and override config with env if supplied
-func LoadDefault() *Config {
+func LoadDefault() Config {
 	return load(".env")
 }
 
 // load config and populate to config struct
-func load(env string) *Config {
+func load(env string) Config {
 	var config Config
 
 	readEnv(env)
@@ -41,7 +37,7 @@ func load(env string) *Config {
 	if err != nil {
 		panic(err)
 	}
-	return &config
+	return config
 }
 
 func readEnv(env string) {

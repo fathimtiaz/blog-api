@@ -4,7 +4,7 @@ ENV GIN_MODE release
 
 WORKDIR /go/src/app
 
-RUN go install github.com/air-verse/air@latest
+# RUN go install github.com/air-verse/air@latest
 
 COPY ./app .
 
