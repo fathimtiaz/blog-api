@@ -30,12 +30,14 @@ func (h *postHandler) Create(c *gin.Context) {
 	var post domain.Post
 
 	if err = c.ShouldBindJSON(&req); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if post, err = h.postService.CreatePost(c, req.Title, req.Content); err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 
@@ -65,7 +67,8 @@ func (h *postHandler) List(c *gin.Context) {
 	var err error
 
 	if posts, err = h.postService.ListPost(c, page, limit); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 
@@ -78,12 +81,14 @@ func (h *postHandler) Get(c *gin.Context) {
 	var post domain.Post
 
 	if postId, err = strconv.Atoi(c.Param("id")); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if post, err = h.postService.GetPost(c, postId); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 
@@ -95,12 +100,14 @@ func (h *postHandler) Update(c *gin.Context) {
 	var post domain.Post
 
 	if err = c.ShouldBindJSON(&post); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if err = h.postService.UpdatePost(c, post); err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 
@@ -112,12 +119,14 @@ func (h *postHandler) Delete(c *gin.Context) {
 	var postId int
 
 	if postId, err = strconv.Atoi(c.Param("id")); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if err = h.postService.DeletePost(c, postId); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 
@@ -135,17 +144,20 @@ func (h *postHandler) AddComment(c *gin.Context) {
 	var comment domain.Comment
 
 	if postId, err = strconv.Atoi(c.Param("id")); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if err = c.ShouldBindJSON(&req); err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if comment, err = h.postService.AddComment(c, postId, req.Content); err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 
@@ -159,12 +171,14 @@ func (h *postHandler) ListComments(c *gin.Context) {
 	var err error
 
 	if postId, err = strconv.Atoi(c.Param("id")); err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		log.Println(err.Error())
+		c.JSON(http.StatusBadRequest, setResponse(ErrBadRequest, nil))
 		return
 	}
 
 	if comments, err = h.postService.GetComments(c, postId, page, limit); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, err.Error())
+		log.Println(err.Error())
+		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
 		return
 	}
 

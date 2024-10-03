@@ -37,6 +37,7 @@ func (h *userHandler) Register(c *gin.Context) {
 	if user, err = h.userService.Register(c, req.Email, req.Name, req.Password); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, setResponse(ErrServer, nil))
+		return
 	}
 
 	c.JSON(http.StatusOK, setResponse(nil, user))
