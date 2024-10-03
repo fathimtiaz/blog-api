@@ -19,6 +19,8 @@ func (db *sqlDB) SavePost(ctx context.Context, post *domain.Post) (err error) {
 func (db *sqlDB) GetPosts(ctx context.Context, query repository.PostQuery) (posts []domain.Post, err error) {
 	var rows *sql.Rows
 
+	query.IfDefaultPage()
+
 	if rows, err = db.QueryContext(ctx, `
 		SELECT id, author_id, title, content, created_at, updated_at
 		FROM post_
@@ -96,6 +98,8 @@ func (db *sqlDB) SavePostComment(ctx context.Context, comment *domain.Comment) (
 
 func (db *sqlDB) GetPostComments(ctx context.Context, query repository.CommentQuery) (comments []domain.Comment, err error) {
 	var rows *sql.Rows
+
+	query.IfDefaultPage()
 
 	if rows, err = db.QueryContext(ctx, `
 		SELECT id, post_id, author_name, content, created_at, updated_at

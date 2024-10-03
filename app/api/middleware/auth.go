@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"reflect"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -43,8 +42,7 @@ func SetAuthdUserCtx(secret string) gin.HandlerFunc {
 
 			return
 		} else {
-			log.Println(reflect.TypeOf(token.Claims), token.Valid, ok)
-			c.AbortWithStatusJSON(http.StatusUnauthorized, "unauthorized y")
+			c.AbortWithStatusJSON(http.StatusUnauthorized, "invalid token")
 			return
 		}
 	}

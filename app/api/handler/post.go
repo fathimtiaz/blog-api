@@ -129,7 +129,7 @@ type addCommentRequest struct {
 }
 
 func (h *postHandler) AddComment(c *gin.Context) {
-	var req createPostRequest
+	var req addCommentRequest
 	var err error
 	var postId int
 	var comment domain.Comment
