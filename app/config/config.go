@@ -19,7 +19,7 @@ type Config struct {
 	}
 	JWT struct {
 		Secret      Env `envconfig:"JWT_SECRET" required:"true"`
-		HourExpired Env `envconfig:"JWT_SECRET" required:"true"`
+		HourExpired Env `envconfig:"HOUR_EXPIRED" required:"true"`
 	}
 }
 

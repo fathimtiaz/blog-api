@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS user_ (
 CREATE TABLE IF NOT EXISTS post_ (
     id SERIAL PRIMARY KEY,
     author_id BIGINT UNSIGNED,
+    title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     deleted BOOLEAN,
     created_at TIMESTAMP,

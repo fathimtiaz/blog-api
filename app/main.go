@@ -19,6 +19,7 @@ func main() {
 	}
 
 	userService := service.NewUserService(cfg, repo)
+	postService := service.NewPostService(cfg, repo)
 
-	api.Router(userService).Run(":8080")
+	api.Router(cfg, userService, postService).Run(":8080")
 }

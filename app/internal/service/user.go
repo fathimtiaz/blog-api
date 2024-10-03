@@ -21,7 +21,7 @@ func NewUserService(cfg config.Config, userRepo UserRepo) *UserService {
 	return &UserService{cfg, userRepo}
 }
 
-func (s *UserService) Register(ctx context.Context, name, email, password string) (user domain.User, err error) {
+func (s *UserService) Register(ctx context.Context, email, name, password string) (user domain.User, err error) {
 	if user, err = domain.NewUser(name, email, password); err != nil {
 		return
 	}

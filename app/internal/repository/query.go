@@ -6,4 +6,12 @@ type UserQuery struct {
 
 type PostQuery struct {
 	Id int
+
+	Pagination
+}
+
+type CommentQuery struct {
+	PostId int
+
+	Pagination
 }

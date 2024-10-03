@@ -4,6 +4,7 @@ import (
 	"blog-api/internal/domain"
 	"blog-api/internal/repository"
 	"context"
+	"database/sql"
 )
 
 func (db *sqlDB) SaveUser(ctx context.Context, user *domain.User) (err error) {
@@ -15,13 +16,18 @@ func (db *sqlDB) SaveUser(ctx context.Context, user *domain.User) (err error) {
 }
 
 func (db *sqlDB) GetUser(ctx context.Context, query repository.UserQuery) (user domain.User, err error) {
+	var createdAt, updatedAt sql.NullTime
+
 	err = db.QueryRowContext(ctx, `
 		SELECT id, name_, email, password_hash, created_at, updated_at
 		FROM user_
 		WHERE email = ?
 	`, query.Email).Scan(
-		&user.Id, &user.Name, &user.Email, &user.PasswordHash, &user.CreatedAt, &user.UpdatedAt,
+		&user.Id, &user.Name, &user.Email, &user.PasswordHash, &createdAt, &updatedAt,
 	)
+
+	user.CreatedAt = createdAt.Time
+	user.CreatedAt = createdAt.Time
 
 	return
 }
