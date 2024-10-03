@@ -93,3 +93,31 @@ func (s *PostService) DeletePost(ctx context.Context, id int) (err error) {
 
 	return s.postRepo.DeletePost(ctx, id, user.Id, time.Now())
 }
+
+func (s *PostService) AddComment(ctx context.Context, postId int, content string) (comment domain.Comment, err error) {
+	var userEmail string
+	var user domain.User
+
+	if userEmail, err = domain.AuthdUserEmail(ctx); err != nil {
+		return
+	}
+
+	if user, err = s.postRepo.GetUser(ctx, repository.UserQuery{Email: userEmail}); err != nil {
+		return
+	}
+
+	comment = domain.NewPostComment(postId, user.Name, content)
+
+	if err = s.postRepo.SavePostComment(ctx, &comment); err != nil {
+		return
+	}
+
+	return
+}
+
+func (s *PostService) GetComments(ctx context.Context, postId, page, limit int) (comments []domain.Comment, err error) {
+	return s.postRepo.GetPostComments(ctx, repository.CommentQuery{
+		PostId:     postId,
+		Pagination: repository.Pagination{Page: page, Limit: limit},
+	})
+}

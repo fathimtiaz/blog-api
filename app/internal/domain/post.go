@@ -30,8 +30,9 @@ type Comment struct {
 	Timestamp
 }
 
-func NewPostComment(authorName string, content string) Comment {
+func NewPostComment(postId int, authorName, content string) Comment {
 	return Comment{
+		PostId:     postId,
 		AuthorName: authorName,
 		Content:    content,
 		Timestamp:  Timestamp{CreatedAt: time.Now()},

@@ -23,7 +23,8 @@ func (db *sqlDB) GetPosts(ctx context.Context, query repository.PostQuery) (post
 		SELECT id, author_id, title, content, created_at, updated_at
 		FROM post_
 		WHERE deleted IS NOT TRUE
-	`); err != nil {
+		LIMIT ? OFFSET ?
+	`, query.Limit, query.Page); err != nil {
 		return
 	}
 	defer rows.Close()
@@ -100,7 +101,8 @@ func (db *sqlDB) GetPostComments(ctx context.Context, query repository.CommentQu
 		SELECT id, post_id, author_name, content, created_at, updated_at
 		FROM post_comment_
 		WHERE post_id = ?
-	`, query.PostId); err != nil {
+		LIMIT ? OFFSET ?
+	`, query.PostId, query.Limit, query.Page); err != nil {
 		return
 	}
 	defer rows.Close()
@@ -114,8 +116,8 @@ func (db *sqlDB) GetPostComments(ctx context.Context, query repository.CommentQu
 			&comment.PostId,
 			&comment.AuthorName,
 			&comment.Content,
-			&comment.CreatedAt,
-			&comment.UpdatedAt,
+			&createdAt,
+			&updatedAt,
 		); err != nil {
 			return
 		}
